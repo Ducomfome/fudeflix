@@ -37,13 +37,37 @@ const App: React.FC = () => {
       e.returnValue = ''; 
     };
 
+    // 3. Bloqueio de Inspeção (Anti-Developer Tools)
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault(); // Desativa botão direito
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Bloqueia F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+      // Bloqueia Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (DevTools)
+      if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'i', 'j', 'c'].includes(e.key)) {
+        e.preventDefault();
+      }
+      // Bloqueia Ctrl+U (Ver Código Fonte)
+      if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+      }
+    };
+
     document.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       clearTimeout(timer);
       document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
