@@ -9,18 +9,43 @@ import { ArrowUpRight, Play, AlertCircle } from 'lucide-react';
 const App: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const handleRedirect = () => {
+    window.open(TELEGRAM_LINK, '_blank');
+  };
+
   useEffect(() => {
     // Timer de 15 segundos para mostrar o modal
     const timer = setTimeout(() => {
       setShowModal(true);
     }, 15000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    // 1. Exit Intent: Detecta quando o mouse sai da janela (vai para a barra de abas)
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        // Tenta abrir o Telegram
+        handleRedirect();
+        // Garante que o modal apareça caso o popup blocker bloqueie o redirect
+        setShowModal(true);
+      }
+    };
 
-  const handleRedirect = () => {
-    window.open(TELEGRAM_LINK, '_blank');
-  };
+    // 2. Before Unload: Mostra confirmação nativa se tentar fechar
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      // A mensagem personalizada é ignorada pela maioria dos navegadores modernos, 
+      // mas a atribuição ativa a caixa de diálogo padrão.
+      e.returnValue = ''; 
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className="bg-[#141414] min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#E50914] selection:text-white pb-20">
@@ -53,7 +78,7 @@ const App: React.FC = () => {
         <p>© 2024 FODE-FLIX. Todos os direitos reservados.</p>
       </footer>
 
-      {/* MODAL 15 Segundos */}
+      {/* MODAL 15 Segundos / Exit Intent */}
       {showModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-[#181818] border border-gray-700 rounded-lg p-6 max-w-md w-full shadow-2xl relative text-center">
@@ -70,9 +95,9 @@ const App: React.FC = () => {
                </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-white mb-2">Está esperando o quê?</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">JÁ VAI SAIR? 😈</h2>
             <p className="text-gray-300 mb-6">
-              Você já está aqui há 15 segundos! O melhor conteúdo exclusivo está a um clique de distância.
+              Não perca a chance! O conteúdo exclusivo VIP está disponível apenas por tempo limitado.
             </p>
 
             <button 
