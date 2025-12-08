@@ -8,13 +8,16 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative h-[80vh] w-full">
+    <div 
+      onClick={handleRedirect}
+      className="relative h-[80vh] w-full cursor-pointer group overflow-hidden"
+    >
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
           src={HERO_IMAGE} 
           alt="Hero Background" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#141414] h-full w-full" />
@@ -22,7 +25,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="absolute bottom-[20%] left-4 md:left-12 max-w-2xl space-y-4">
+      <div className="absolute bottom-[20%] left-4 md:left-12 max-w-2xl space-y-4 pointer-events-none">
         <div className="flex items-center gap-2 mb-2">
           <span className="bg-[#E50914] text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-sm">
             TOP 1 NO BRASIL
@@ -39,18 +42,24 @@ const Hero: React.FC = () => {
           Entre agora no nosso canal privado e tenha acesso imediato.
         </p>
 
-        <div className="flex items-center gap-3 pt-4">
+        <div className="flex items-center gap-3 pt-4 pointer-events-auto">
           <button 
-            onClick={handleRedirect}
-            className="bg-white text-black hover:bg-white/90 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRedirect();
+            }}
+            className="bg-white text-black hover:bg-white/90 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg hover:scale-105 transform duration-200"
           >
             <Play className="w-5 h-5 md:w-6 md:h-6 fill-black" />
             Assistir Agora
           </button>
           
           <button 
-            onClick={handleRedirect}
-            className="bg-gray-500/70 text-white hover:bg-gray-500/50 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg backdrop-blur-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRedirect();
+            }}
+            className="bg-gray-500/70 text-white hover:bg-gray-500/50 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg backdrop-blur-sm hover:scale-105 transform duration-200"
           >
             <Info className="w-5 h-5 md:w-6 md:h-6" />
             Mais Informações
