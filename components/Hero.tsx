@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
   return (
     <div 
       onClick={handleRedirect}
-      className="relative h-[80vh] w-full cursor-pointer group overflow-hidden"
+      className="relative h-[80vh] w-full cursor-pointer group overflow-hidden z-0"
     >
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -21,8 +21,8 @@ const Hero: React.FC = () => {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#141414] h-full w-full" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#141414]/80 via-transparent to-transparent h-full w-full" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#141414] h-full w-full pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#141414]/80 via-transparent to-transparent h-full w-full pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -43,13 +43,14 @@ const Hero: React.FC = () => {
           Entre agora no nosso canal privado e tenha acesso imediato.
         </p>
 
+        {/* Buttons - Pointer events auto to ensure hover effects work, but click bubbles up */}
         <div className="flex items-center gap-3 pt-4 pointer-events-auto">
           <button 
             onClick={(e) => {
               e.stopPropagation();
               handleRedirect();
             }}
-            className="bg-white text-black hover:bg-white/90 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg hover:scale-105 transform duration-200"
+            className="bg-white text-black hover:bg-white/90 transition flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 rounded font-bold text-sm md:text-lg hover:scale-105 transform duration-200 shadow-lg"
           >
             <Play className="w-5 h-5 md:w-6 md:h-6 fill-black" />
             Assistir Agora
