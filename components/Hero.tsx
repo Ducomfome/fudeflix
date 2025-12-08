@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Play, Info } from 'lucide-react';
 import { TELEGRAM_LINK, HERO_IMAGE } from '../constants';
