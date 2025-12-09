@@ -1,7 +1,7 @@
 
 
 // CONFIGURAÇÃO PRINCIPAL
-export const TELEGRAM_LINK = 'https://t.me/+iQFl88bD8mE4MTA5'; // Link atualizado
+export const TELEGRAM_LINK = 'https://t.me/+L1LKJvWkjDIyYzEx'; // Link atualizado
 
 // IMAGENS
 // NOTA: Imagens atualizadas para links fornecidos (Proporção 16:9)
