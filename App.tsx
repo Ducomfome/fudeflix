@@ -4,16 +4,26 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import VideoRow from './components/VideoRow';
 import { CATEGORIES, TELEGRAM_LINK } from './constants';
-import { ArrowUpRight, Play, AlertCircle } from 'lucide-react';
+import { ArrowUpRight, Play, AlertCircle, MoreHorizontal, Globe, Share } from 'lucide-react';
 
 const App: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [isTikTok, setIsTikTok] = useState(false);
 
   const handleRedirect = () => {
     window.open(TELEGRAM_LINK, '_blank');
   };
 
   useEffect(() => {
+    // 0. Detectar Navegador do TikTok
+    const ua = navigator.userAgent.toLowerCase();
+    // Verifica strings comuns do navegador interno do TikTok
+    if (ua.includes('tiktok') || ua.includes('bytedance')) {
+      setIsTikTok(true);
+      // Não executamos o resto da lógica se for TikTok, pois mostraremos apenas o tutorial
+      return; 
+    }
+
     // Timer de 15 segundos para mostrar o modal
     const timer = setTimeout(() => {
       setShowModal(true);
@@ -71,6 +81,48 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // TELA DE TUTORIAL PARA TIKTOK
+  if (isTikTok) {
+    return (
+      <div className="min-h-screen bg-[#141414] text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+        {/* Setas animadas apontando para o canto superior direito (onde ficam os 3 pontos) */}
+        <div className="absolute top-4 right-4 animate-bounce text-[#E50914]">
+          <ArrowUpRight className="w-12 h-12 stroke-[3]" />
+        </div>
+
+        <div className="bg-[#1f1f1f] p-8 rounded-2xl border-2 border-[#E50914] shadow-[0_0_30px_rgba(229,9,20,0.3)] max-w-sm w-full">
+          <AlertCircle className="w-16 h-16 text-[#E50914] mx-auto mb-6" />
+          
+          <h1 className="text-2xl font-black mb-4 uppercase leading-tight">
+            Navegador Bloqueado!
+          </h1>
+          
+          <p className="text-gray-300 text-lg mb-8 font-medium">
+            O TikTok não permite abrir este conteúdo exclusivo por aqui.
+          </p>
+
+          <div className="space-y-4 text-left bg-black/30 p-4 rounded-lg mb-8">
+            <div className="flex items-center gap-3">
+              <span className="bg-[#E50914] w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm shrink-0">1</span>
+              <p className="text-sm">Clique nos <strong className="text-white">3 pontinhos</strong> ou em <strong className="text-white">Compartilhar</strong> no topo da tela.</p>
+              <MoreHorizontal className="w-5 h-5 text-gray-400 shrink-0" />
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="bg-[#E50914] w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm shrink-0">2</span>
+              <p className="text-sm">Selecione a opção <strong className="text-white">Abrir no Navegador</strong> (Chrome ou Safari).</p>
+              <Globe className="w-5 h-5 text-gray-400 shrink-0" />
+            </div>
+          </div>
+
+          <p className="text-xs text-gray-500 font-mono">
+            Aguardando abertura no navegador externo...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // APP NORMAL (CHROME/SAFARI/ETC)
   return (
     <div className="bg-[#141414] min-h-screen text-white font-sans overflow-x-hidden selection:bg-[#E50914] selection:text-white pb-20">
       <Navbar />
